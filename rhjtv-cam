@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hertog Jan TV Camera</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .login-box, .camera-control {
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .login-box {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    #loginSection button {
+      background-color: black;
+    }
+
+    .start-uitzending { background-color: darkgreen; }
+    .stop-uitzending  { background-color: red; }
+    .status-btn       { background-color: gold; color: black; }
+
+    #statusMsg {
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+<div id="loginSection" class="login-box">
+  <h2>Inloggen</h2>
+  <input type="text" id="username" placeholder="Gebruikersnaam" />
+  <input type="password" id="password" placeholder="Wachtwoord" />
+  <button onclick="login()">Inloggen</button>
+  <p id="loginMsg" style="color:red;"></p>
+</div>
+
+<div id="cameraSection" class="camera-control" style="display:none;">
+  <h2>Welkom David Smets</h2>
+
+  <button class="start-uitzending" onclick="startLive()">Start uitzending</button>
+  <button class="stop-uitzending" onclick="stopLive()">Stop uitzending</button>
+  <button class="status-btn" onclick="statusLive()">Status?</button>
+
+  <p id="statusMsg">Status is niet actief</p>
+</div>
+
+<script>
+  const fixedUsername = 'admin';
+  const fixedPassword = 'testen';
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') login();
+  });
+
+  function login() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value.trim();
+    const loginMsg = document.getElementById('loginMsg');
+
+    loginMsg.style.color = 'blue';
+    loginMsg.textContent = 'Even geduld...';
+
+    setTimeout(() => {
+      if (u === fixedUsername && p === fixedPassword) {
+        loginMsg.style.color = 'green';
+        loginMsg.textContent = 'Inloggen gelukt! Welkom ' + u + '.';
+
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('cameraSection').style.display = 'block';
+
+        // Status direct tonen na login
+        const status = document.getElementById('statusMsg');
+        status.textContent = 'Status is niet actief';
+        status.style.color = 'black';
+
+      } else {
+        loginMsg.style.color = 'red';
+        loginMsg.textContent = 'Gebruikersnaam of wachtwoord is onjuist.';
+      }
+    }, 1500);
+  }
+
+  function startLive() {
+    const status = document.getElementById('statusMsg');
+    status.textContent = 'Live-uitzending is gestart';
+    status.style.color = 'green';
+  }
+
+  function stopLive() {
+    const status = document.getElementById('statusMsg');
+    status.textContent = 'Live-uitzending is gestopt';
+    status.style.color = 'red';
+  }
+
+  function statusLive() {
+    alert('De status is: ' + document.getElementById('statusMsg').textContent);
+  }
+</script>
+
+</body>
+</html>
